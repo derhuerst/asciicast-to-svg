@@ -26,10 +26,10 @@ for (let [name, size] of flags) {
 const renderCell = (x, y, text, fg, bg, inverse, underline, bold) => {
 	// todo: inverse
 	return h('text', {
-		x: x + '',
+		x: (x * 8 / 10).toFixed(3).replace('.000', ''),
 		y: y + '',
 		style: {
-			color: fg,
+			fill: fg,
 			backgroundColor: bg,
 			fontWeight: bold ? 'bold' : 'normal',
 			textDecoration: underline ? 'underline' : 'none'
@@ -54,8 +54,8 @@ const createRenderer = (meta) => {
 				const inverse = !!((raw & masks.inverse) >> shifts.inverse)
 				const underline = !!((raw & masks.underline) >> shifts.underline)
 				const bold = !!((raw & masks.bold) >> shifts.bold)
-				const fg = '#' + (colors.fg[(raw & masks.fg) >> shifts.fg] || 'fff')
-				const bg = '#' + (colors.bg[(raw & masks.bg) >> shifts.bg] || '000')
+				const fg = colors[(raw & masks.fg) >> shifts.fg] || '#fff'
+				const bg = colors[(raw & masks.bg) >> shifts.bg] || '#000'
 
 				cells.push(renderCell(x, y, text, fg, bg, inverse, underline, bold))
 			}
@@ -63,10 +63,15 @@ const createRenderer = (meta) => {
 
 		return h('svg', {
 			xmlns: 'http://www.w3.org/2000/svg',
-			width: meta.width,
-			height: meta.height,
-			viewBox: `0 0 ${meta.width} ${meta.height}`,
-			style: {backgroundColor: '#000'}
+			width: (meta.width * 10) + '',
+			height: (meta.height * 10 * 8 / 10).toFixed(3),
+			viewBox: `0 -1 ${meta.width} ${meta.height - 1}`,
+			style: {
+				backgroundColor: '#000',
+				fontFamily: 'monospace',
+				fontSize: '1',
+				stroke: 'none'
+			}
 		}, cells)
 	}
 
