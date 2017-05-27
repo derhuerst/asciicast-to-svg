@@ -2,6 +2,7 @@
 
 const Terminal = require('headless-terminal')
 const colors = require('./colors')
+const h = require('virtual-dom/virtual-hyperscript/svg')
 
 // bit masks, see https://github.com/dtinth/screen-buffer#cell-attributes
 const flags = [
@@ -22,8 +23,18 @@ for (let [name, size] of flags) {
 	offset += size
 }
 
-const renderCell = (text, fg, bg, inverse, underline, bold) => {
-	return text
+const renderCell = (x, y, text, fg, bg, inverse, underline, bold) => {
+	// todo: inverse
+	return h('text', {
+		x: x + '',
+		y: y + '',
+		style: {
+			color: fg,
+			backgroundColor: bg,
+			fontWeight: bold ? 'bold' : 'normal',
+			textDecoration: underline ? 'underline' : 'none'
+		}
+	}, text)
 }
 
 const createRenderer = (meta) => {
@@ -34,7 +45,7 @@ const createRenderer = (meta) => {
 		// const text = t.displayBuffer.toString()
 		const b = t.displayBuffer
 
-		const out = []
+		const cells = []
 		for (let y = 0; y < meta.height; y++) {
 			for (let x = 0; x < meta.width; x++) {
 				const [raw, text] = b.getCell(y, x)
@@ -43,14 +54,20 @@ const createRenderer = (meta) => {
 				const inverse = !!((raw & masks.inverse) >> shifts.inverse)
 				const underline = !!((raw & masks.underline) >> shifts.underline)
 				const bold = !!((raw & masks.bold) >> shifts.bold)
-				const fg = colors.fg[(raw & masks.fg) >> shifts.fg]
-				const bg = colors.bg[(raw & masks.bg) >> shifts.bg]
+				const fg = '#' + (colors.fg[(raw & masks.fg) >> shifts.fg] || 'fff')
+				const bg = '#' + (colors.bg[(raw & masks.bg) >> shifts.bg] || '000')
 
-				out.push(renderCell(text, fg, bg, inverse, underline, bold))
+				cells.push(renderCell(x, y, text, fg, bg, inverse, underline, bold))
 			}
 		}
 
-		return out
+		return h('svg', {
+			xmlns: 'http://www.w3.org/2000/svg',
+			width: meta.width,
+			height: meta.height,
+			viewBox: `0 0 ${meta.width} ${meta.height}`,
+			style: {backgroundColor: '#000'}
+		}, cells)
 	}
 
 	return render

@@ -1,14 +1,15 @@
 'use strict'
 
+const toString = require('virtual-dom-stringify')
 const {createRenderer} = require('.')
 
 const asciicast = require('./example.json')
 
 const render = createRenderer(asciicast)
 
-let svg = ''
+let svg = null
 for (let [delay, data] of asciicast.stdout) {
 	svg = render(data)
 }
 
-process.stdout.write(svg)
+console.log(toString(svg))
