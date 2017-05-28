@@ -24,22 +24,16 @@ const asciicast = {
 
 const firstChar = h('text', {
 	x: '0',
-	y: '0',
+	y: '16',
 	style: {
-		fill: 'rgb(187,0,0)',
-		backgroundColor: '#000',
-		fontWeight: 'normal',
-		textDecoration: 'none'
+		fill: 'rgb(187,0,0)'
 	}
 }, 'H')
 const secondChar = h('text', {
-	x: '0.800',
-	y: '0',
+	x: '10',
+	y: '16',
 	style: {
-		fill: 'rgb(187,0,0)',
-		backgroundColor: '#000',
-		fontWeight: 'normal',
-		textDecoration: 'none'
+		fill: 'rgb(187,0,0)'
 	}
 }, 'e')
 
