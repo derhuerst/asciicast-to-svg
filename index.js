@@ -23,17 +23,20 @@ for (let [name, size] of flags) {
 	offset += size
 }
 
+const projectX = (x) => Math.round(x * .5 * 2000) / 100
+const projectY = (y) => Math.round(y * 2000) / 100
+
 const renderCell = (x, y, text, fg, bg, inverse, underline, bold) => {
+	const s = {fill: fg}
+	if (underline) s.textDecoration = 'underline'
+	if (bold) s.fontWeight = 'bold'
+	if (bg && bg !== '#000') s.backgroundColor = bg
+
 	// todo: inverse
 	return h('text', {
-		x: (x * 8 / 10).toFixed(3).replace('.000', ''),
-		y: y + '',
-		style: {
-			fill: fg,
-			backgroundColor: bg,
-			fontWeight: bold ? 'bold' : 'normal',
-			textDecoration: underline ? 'underline' : 'none'
-		}
+		x: projectX(x) + '',
+		y: projectY(y + .8) + '',
+		style: s
 	}, text)
 }
 
@@ -59,21 +62,24 @@ const createRenderer = (meta) => {
 				const underline = !!((raw & masks.underline) >> shifts.underline)
 				const bold = !!((raw & masks.bold) >> shifts.bold)
 				const fg = colors[(raw & masks.fg) >> shifts.fg] || '#fff'
-				const bg = colors[(raw & masks.bg) >> shifts.bg] || '#000'
+				const bg = colors[(raw & masks.bg) >> shifts.bg]
 
 				cells.push(renderCell(x, y, text, fg, bg, inverse, underline, bold))
 			}
 		}
 
+		const width = projectY(.5) + projectX(meta.width)
+		const height = projectY(.5) + projectY(meta.height)
+
 		return h('svg', {
 			xmlns: 'http://www.w3.org/2000/svg',
-			width: (meta.width * 10) + '',
-			height: (meta.height * 10 * 8 / 10).toFixed(3),
-			viewBox: `0 -1 ${meta.width} ${meta.height - 1}`,
+			width: width + '',
+			height: height + '',
+			viewBox: [-projectY(.25), -projectY(.25), width, height].join(' '),
 			style: {
 				backgroundColor: '#000',
-				fontFamily: 'monospace',
-				fontSize: '1',
+				fontFamily: "Consolas, Menlo, 'Bitstream Vera Sans Mono', monospace, 'Powerline Symbols'",
+				fontSize: projectY(.8),
 				stroke: 'none'
 			}
 		}, cells)
