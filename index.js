@@ -40,9 +40,13 @@ const renderCell = (x, y, text, fg, bg, inverse, underline, bold) => {
 const createRenderer = (meta) => {
 	const t = new Terminal(meta.width, meta.height)
 
-	const render = (diff) => {
+	const write = (diff) => {
 		t.write(diff)
-		// const text = t.displayBuffer.toString()
+	}
+
+	const text = () => t.displayBuffer.toString()
+
+	const render = () => {
 		const b = t.displayBuffer
 
 		const cells = []
@@ -75,7 +79,22 @@ const createRenderer = (meta) => {
 		}, cells)
 	}
 
-	return render
+	return {write, text, render}
 }
 
-module.exports = {createRenderer}
+const renderAt = (asciicast, time) => {
+	const renderer = createRenderer(asciicast)
+
+	let t = 0
+	for (let [delay, data] of asciicast.stdout) {
+		t += delay
+		if (t > time) break
+
+		renderer.write(data)
+	}
+
+	return renderer.render()
+}
+
+renderAt.createRenderer = createRenderer
+module.exports = renderAt
