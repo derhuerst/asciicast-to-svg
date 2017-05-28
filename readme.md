@@ -17,21 +17,27 @@ npm install derhuerst/asciicast-to-svg
 
 ## Usage
 
-To render an individual frame, use `createRenderer`.
+To render an Asciicast at a specific time, use `renderAt`:
+
+```js
+const renderAt = require('asciicast-to-svg')
+const toString = require('virtual-dom-stringify')
+
+const asciicast = { /* … */ }
+
+console.log(toString(renderAt(asciicast, 2.3))) // at 2.3 seconds
+```
+
+You can also render individual frames by using `createRenderer`. This example will render all frames:
 
 ```js
 const {createRenderer} = require('asciicast-to-svg')
 
-const asciicast = { /* … */ }
-const render = createRenderer({width: asciicast.width, height: asciicast.height})
-
-let svg = ''
-for (let i = 0; i < 3; i++) {
-	const data = asciicast.stdout[i][1]
-	svg = render(data)
+const renderer = createRenderer({width: asciicast.width, height: asciicast.height})
+for (let [delay, data] of asciicast.stdout) {
+	renderer.write(data)
+	console.log(toString(renderer.render()))
 }
-
-console.log(svg)
 ```
 
 
