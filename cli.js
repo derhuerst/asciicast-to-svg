@@ -2,7 +2,7 @@
 'use strict'
 
 const minimist = require('minimist')
-const toString = require('virtual-dom-stringify')
+const toString = require('vdom-to-html')
 
 const pkg = require('./package.json')
 const renderAt = require('.')
