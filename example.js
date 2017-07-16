@@ -1,6 +1,6 @@
 'use strict'
 
-const toString = require('virtual-dom-stringify')
+const toString = require('vdom-to-html')
 const renderAt = require('.')
 
 const asciicast = require('./example.json')
