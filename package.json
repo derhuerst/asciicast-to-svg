@@ -1,7 +1,7 @@
 {
 	"name":         "asciicast-to-svg",
 	"description":  "Render frames of Asciicasts as SVGs.",
-	"version":      "0.2.0",
+	"version":      "0.2.1",
 	"main":         "index.js",
 	"bin":          "./cli.js",
 	"files":        ["index.js", "colors.js", "cli.js"],
