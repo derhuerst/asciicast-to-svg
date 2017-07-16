@@ -15,8 +15,8 @@
 		"headless-terminal": "^0.4.0",
 		"minimist": "^1.2.0",
 		"screen-buffer": "^0.4.0",
-		"virtual-dom": "^2.1.1",
-		"virtual-dom-stringify": "^3.0.1"
+		"vdom-to-html": "^2.3.1",
+		"virtual-dom": "^2.1.1"
 	},
 	"devDependencies": {
 		"benchmark": "^2.1.4",
