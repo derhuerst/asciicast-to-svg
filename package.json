@@ -3,7 +3,7 @@
 	"description":  "Render frames of Asciicasts as SVGs.",
 	"version":      "0.2.0",
 	"main":         "index.js",
-	"bin":          "cli.js",
+	"bin":          "./cli.js",
 	"files":        ["index.js", "colors.js", "cli.js"],
 	"keywords":     ["svg", "asciinema", "asciicast"],
 	"author":       "Jannis R <mail@jannisr.de>",
