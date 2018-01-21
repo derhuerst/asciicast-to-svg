@@ -11,11 +11,27 @@
 ## Installing
 
 ```shell
-npm install derhuerst/asciicast-to-svg
+npm install -g derhuerst/asciicast-to-svg
 ```
 
 
 ## Usage
+
+### CLI
+
+```txt
+Usage:
+    asciicast-to-svg [time]
+
+Arguments:
+    time   Which frame to render, in seconds.
+
+Examples:
+    cat some-asciicast.json | asciicast-to-svg 2.3 > some-asciicast.svg
+```
+
+
+### JavaScript API
 
 To render an Asciicast at a specific time, use `renderAt`:
 
