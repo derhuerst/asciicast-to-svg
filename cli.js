@@ -49,6 +49,11 @@ process.stdin
 		const svg = toString(renderAt(asciicast, seconds))
 		process.stdout.write(svg)
 	} catch (err) {
-		return showError(err)
+		console.error(`\
+Failed to parse the Asciicast as JSON.
+
+asciicast-to-svg only supports the v1 format right now.
+Contribute support for the v2 format: https://github.com/derhuerst/asciicast-to-svg/issues/6`)
+		process.exit(1)
 	}
 })
